@@ -1,4 +1,4 @@
-class Libsecp256k1 < Formula
+class LibinotifyKqueue < Formula
   desc "The inotify API on BSD family OSs"
   homepage "https://github.com/libinotify-kqueue/libinotify-kqueue"
   url "https://github.com/libinotify-kqueue/libinotify-kqueue.git",
