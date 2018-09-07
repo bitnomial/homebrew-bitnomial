@@ -1,8 +1,8 @@
 class Libsecp256k1 < Formula
   desc "The inotify API on BSD family OSs"
-  homepage "https://github.com/dmatveev/libinotify-kqueue"
-  url "https://github.com/dmatveev/libinotify-kqueue.git",
-    :revision => "64de19078c04456e787c9d8fba893b3a7724db73"
+  homepage "https://github.com/libinotify-kqueue/libinotify-kqueue"
+  url "https://github.com/libinotify-kqueue/libinotify-kqueue.git",
+    :revision => "a822c8f1d75404fe3132f695a898dcd42fe8afbc"
 
   option :universal
   depends_on "autoconf" => :build
