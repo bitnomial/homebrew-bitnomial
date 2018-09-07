@@ -4,16 +4,12 @@ class Libsecp256k1 < Formula
   url "https://github.com/bitcoin/secp256k1.git",
     :revision => "1e6f1f5ad5e7f1e3ef79313ec02023902bf8175c"
 
-  option :universal
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "gmp" => :optional
 
   def install
-    if build.universal?
-      ENV.universal_binary
-    end
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"

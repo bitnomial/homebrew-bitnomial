@@ -4,15 +4,11 @@ class LibinotifyKqueue < Formula
   url "https://github.com/libinotify-kqueue/libinotify-kqueue.git",
     :revision => "a822c8f1d75404fe3132f695a898dcd42fe8afbc"
 
-  option :universal
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
 
   def install
-    if build.universal?
-      ENV.universal_binary
-    end
     system "autoreconf", "-fvi"
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
