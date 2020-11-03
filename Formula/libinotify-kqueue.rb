@@ -3,6 +3,7 @@ class LibinotifyKqueue < Formula
   homepage "https://github.com/libinotify-kqueue/libinotify-kqueue"
   url "https://github.com/libinotify-kqueue/libinotify-kqueue.git",
     :revision => "a822c8f1d75404fe3132f695a898dcd42fe8afbc"
+  version "a822c8f1d75404fe3132f695a898dcd42fe8afbc"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

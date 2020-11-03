@@ -3,6 +3,7 @@ class Libsecp256k1 < Formula
   homepage "https://github.com/bitcoin/secp256k1"
   url "https://github.com/bitcoin/secp256k1.git",
     :revision => "1e6f1f5ad5e7f1e3ef79313ec02023902bf8175c"
+  version "1e6f1f5ad5e7f1e3ef79313ec02023902bf8175c"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
