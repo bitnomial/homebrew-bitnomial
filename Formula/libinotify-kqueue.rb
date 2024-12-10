@@ -2,8 +2,8 @@ class LibinotifyKqueue < Formula
   desc "The inotify API on BSD family OSs"
   homepage "https://github.com/libinotify-kqueue/libinotify-kqueue"
   url "https://github.com/libinotify-kqueue/libinotify-kqueue.git",
-    :revision => "a822c8f1d75404fe3132f695a898dcd42fe8afbc"
-  version "a822c8f1d75404fe3132f695a898dcd42fe8afbc"
+    :revision => "0de168e0a9363f6f261e59f93b9f976b57d4fab6"
+  version "0de168e0a9363f6f261e59f93b9f976b57d4fab6"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
