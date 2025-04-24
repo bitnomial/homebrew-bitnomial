@@ -9,30 +9,49 @@ class Aeron < Formula
 
   def install
     # Build without Java dependency
+    args = %W[
+      -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      -DBUILD_AERON_ARCHIVE_API=OFF
+      -DAERON_TESTS=OFF
+      -DAERON_SYSTEM_TESTS=OFF
+      -DAERON_BUILD_SAMPLES=OFF
+      -DCMAKE_MACOSX_RPATH=ON
+      -DCMAKE_INSTALL_RPATH=#{lib}
+      -DCMAKE_INSTALL_NAME_DIR=#{lib}
+    ]
+
     mkdir "build" do
-      system "cmake", "..", 
-        "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
-        "-DBUILD_AERON_ARCHIVE_API=OFF",
-        "-DAERON_TESTS=OFF", 
-        "-DAERON_SYSTEM_TESTS=OFF",
-        "-DAERON_BUILD_SAMPLES=OFF"
+      system "cmake", "..", *args
       system "make"
     end
-    
-    # Install headers
-    include.install Dir["aeron-client/src/main/cpp/Aeron.h"]
-    include.install Dir["aeron-client/src/main/cpp/*.h"]
-    include.install Dir["aeron-client/src/main/cpp/concurrent/*"]
-    include.install Dir["aeron-client/src/main/cpp/protocol/*"]
-    include.install Dir["aeron-client/src/main/cpp/command/*"]
-    include.install Dir["aeron-client/src/main/cpp/util/*"]
-    
+
+    # Create aeron subdirectory for headers
+    (include/"aeron").mkpath
+
+    # Install C API headers
+    (include/"aeron").install Dir["aeron-client/src/main/c/*.h"]
+
+    # Install C API subdirectories
+    ["collections", "command", "concurrent", "protocol", "reports", "status", "uri", "util"].each do |dir|
+      if Dir.exist?("aeron-client/src/main/c/#{dir}")
+        (include/"aeron"/dir).mkpath
+        (include/"aeron"/dir).install Dir["aeron-client/src/main/c/#{dir}/*.h"]
+      end
+    end
+
     # Install libraries
     lib.install Dir["build/lib/*"]
-    
+
     # Install binaries
     bin.install Dir["build/binaries/*"]
-    
+
+    # Fix binary rpaths
+    bin.find do |path|
+      if path.file? && path.executable?
+        system "install_name_tool", "-add_rpath", lib, path
+      end
+    end
+
     # Generate and install pkg-config file
     mkdir_p "#{lib}/pkgconfig"
     File.open("#{lib}/pkgconfig/aeron-client.pc", "w") do |f|
@@ -45,20 +64,22 @@ class Aeron < Formula
       f.puts "Requires.private:"
     end
   end
-  
+
   test do
     # Create simplified test that doesn't rely on internal headers
-    (testpath/"test.cpp").write <<~EOS
-      #include <iostream>
-      #include <cstdlib>
-      
+    (testpath/"test.c").write <<~EOS
+      #include <stdio.h>
+      #include <aeron/aeronc.h>
+
       int main() {
-        // Simple test to verify the libraries are available
-        std::cout << "Aeron test successful" << std::endl;
+        printf("Aeron version: %d.%d.%d\\n",
+          AERON_VERSION_MAJOR,
+          AERON_VERSION_MINOR,
+          AERON_VERSION_PATCH);
         return 0;
       }
     EOS
-    system ENV.cxx, "test.cpp", "-std=c++11", "-L#{lib}", "-laeron", "-o", "test"
-    assert_equal "Aeron test successful", shell_output("./test").strip
+    system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-laeron", "-o", "test"
+    system "./test"
   end
 end
