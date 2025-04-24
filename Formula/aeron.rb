@@ -2,8 +2,8 @@ class Aeron < Formula
   desc "Efficient reliable UDP unicast, UDP multicast, and IPC message transport"
   homepage "https://github.com/aeron-io/aeron"
   url "https://github.com/aeron-io/aeron.git",
-    :revision => "eb83c224e5dd8e22fce1d4631c4e5b952697f30d"
-  version "1.44.1"
+    :revision => "584b7c6fb2c997abd9f9f2554a634c83959b7f94"
+  version "1.44.6"
 
   depends_on "cmake" => :build
 
