@@ -52,7 +52,7 @@ class Aeron < Formula
       end
     end
 
-    # Generate and install pkg-config file
+    # Generate and install pkg-config files
     mkdir_p "#{lib}/pkgconfig"
     File.open("#{lib}/pkgconfig/aeron-client.pc", "w") do |f|
       f.puts "Name: aeron-client"
@@ -60,6 +60,16 @@ class Aeron < Formula
       f.puts "Version: #{version}"
       f.puts "Cflags: -I#{include}"
       f.puts "Libs: -L#{lib} -laeron -laeron_client_shared"
+      f.puts "Requires:"
+      f.puts "Requires.private:"
+    end
+
+    File.open("#{lib}/pkgconfig/aeron-driver.pc", "w") do |f|
+      f.puts "Name: aeron-driver"
+      f.puts "Description: Aeron embedded media driver"
+      f.puts "Version: #{version}"
+      f.puts "Cflags: -I#{include}"
+      f.puts "Libs: -L#{lib} -laeron_driver"
       f.puts "Requires:"
       f.puts "Requires.private:"
     end
